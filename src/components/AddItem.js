@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 
 class AddItem extends Component {
-  state = {};
+  state = { quantity: 0, product_name: this.props.defaultItems[0].name };
 
   handleSubmit = (e) => {
     e.preventDefault();
+
     console.log("from handleSubmit: ", this.props.defaultItems);
     let productToAdd = this.props.defaultItems.filter(
       (el) => el.name === this.state.product_name
