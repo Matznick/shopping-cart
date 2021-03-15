@@ -9,7 +9,7 @@ function App() {
     <div className="App">
       <Header />
       <CartItems />
-      <Footer />
+      <Footer copyright={"2016"} />
     </div>
   );
 }
