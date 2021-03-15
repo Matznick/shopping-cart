@@ -18,6 +18,9 @@ const cartItemsList = [
     quantity: 1,
   },
 ];
+
+// hier methoed einbauen für callback, die ein item hinzufügt. eigentlihc nur ein item in das array concaten. wie geau? erst hoch zu app schicken, dann wieder zu createItems?
+
 class CartItems extends Component {
   render() {
     return (
