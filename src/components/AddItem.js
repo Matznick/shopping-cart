@@ -5,49 +5,51 @@ class AddItem extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    // additem to list with parent method callback
     console.log("from handleSubmit: ", this.props.defaultItems);
     let productToAdd = this.props.defaultItems.filter(
-      //(el) => console.log("el is: " + el)
       (el) => el.name === this.state.product_name
     );
-    const itemToAdd = { product: productToAdd, quantity: this.state.quantity };
+    const itemToAdd = {
+      product: productToAdd[0],
+      quantity: this.state.quantity,
+    };
     console.log("from handelSubmit: itemToAdd", itemToAdd);
-    return itemToAdd;
-    // kein return, hier callback! mehtode für callback fehlt noch
+    this.props.addItemCallback(itemToAdd);
   };
 
   handleChange = (e) => {
     console.log("from handleChange e.target.name: ", e.target.name);
-    console.log(this.state);
+    console.log("state: ", this.state);
     this.setState({ [e.target.name]: e.target.value });
   };
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Quantity:
-          <p>
-            <input type="text" onChange={this.handleChange} name="quantity" />
-          </p>
-        </label>
-        <div>
+      <div className="container">
+        <form onSubmit={this.handleSubmit}>
           <label>
-            Products:
+            Quantity:
             <p>
-              <select onChange={this.handleChange} name="product_name">
-                {this.props.defaultItems.map((el) => (
-                  <option value={el.name}>{el.name}</option>
-                ))}
-              </select>
+              <input type="text" onChange={this.handleChange} name="quantity" />
             </p>
           </label>
-        </div>
-        <p>
-          <input type="submit" />
-        </p>
-      </form>
+          <div>
+            <label>
+              Products:
+              <p>
+                <select onChange={this.handleChange} name="product_name">
+                  {this.props.defaultItems.map((el) => (
+                    <option value={el.name}>{el.name}</option>
+                  ))}
+                </select>
+              </p>
+            </label>
+          </div>
+          <p>
+            <input type="submit" />
+          </p>
+        </form>
+      </div>
     );
   }
 }
