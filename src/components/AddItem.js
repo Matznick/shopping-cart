@@ -14,12 +14,9 @@ class AddItem extends Component {
       quantity: this.state.quantity,
     };
 
-    // this.props.addItemCallback(itemToAdd);
-
     const itemToPost = {
       product_id: itemToAdd.product.id,
       quantity: itemToAdd.quantity,
-      // id: null,
     };
     this.props.postItem(itemToPost);
   };
