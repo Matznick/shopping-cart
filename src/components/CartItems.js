@@ -32,11 +32,12 @@ class CartItems extends Component {
               <div className="col-md-2">Quantity</div>
             </div>
           </div>
-          {this.props.cartItemsList.map((item) => (
+          {this.props.cartItemsList.map((item, i) => (
             <CartItem
               product={item.product.name}
               price={item.product.priceInCents}
               quantity={item.quantity}
+              key={i}
             />
           ))}
           {`${this.calculateTotal() / 100} $`}

@@ -1,20 +1,21 @@
 import React, { Component } from "react";
 
 class AddItem extends Component {
-  state = { quantity: 0, product_name: this.props.defaultItems[0].name };
+  state = { quantity: 0, product_name: "none" };
 
   handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log("from handleSubmit: ", this.props.defaultItems);
-    let productToAdd = this.props.defaultItems.filter(
+    // console.log("from handleSubmit: ", this.props.defaultItems);
+
+    let productToAdd = this.props.availableItems.filter(
       (el) => el.name === this.state.product_name
     );
     const itemToAdd = {
       product: productToAdd[0],
       quantity: this.state.quantity,
     };
-    console.log("from handelSubmit: itemToAdd", itemToAdd);
+    // console.log("from handelSubmit: itemToAdd", itemToAdd);
     this.props.addItemCallback(itemToAdd);
   };
 
@@ -39,15 +40,17 @@ class AddItem extends Component {
               Products:
               <p>
                 <select onChange={this.handleChange} name="product_name">
-                  {this.props.defaultItems.map((el) => (
-                    <option value={el.name}>{el.name}</option>
+                  {this.props.availableItems.map((el, i) => (
+                    <option key={i} value={el.name}>
+                      {el.name}
+                    </option>
                   ))}
                 </select>
               </p>
             </label>
           </div>
           <p>
-            <input type="submit" />
+            <input className="btn btn-primary" type="submit" />
           </p>
         </form>
       </div>
