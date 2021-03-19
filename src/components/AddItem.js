@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 
 class AddItem extends Component {
-  state = { quantity: 0, product_name: "none" };
+  state = { quantity: 0, product_name: "Mediocre Iron Watch" };
 
   handleSubmit = (e) => {
     e.preventDefault();
-
-    // console.log("from handleSubmit: ", this.props.defaultItems);
 
     let productToAdd = this.props.availableItems.filter(
       (el) => el.name === this.state.product_name
@@ -15,13 +13,18 @@ class AddItem extends Component {
       product: productToAdd[0],
       quantity: this.state.quantity,
     };
-    // console.log("from handelSubmit: itemToAdd", itemToAdd);
-    this.props.addItemCallback(itemToAdd);
+
+    // this.props.addItemCallback(itemToAdd);
+
+    const itemToPost = {
+      product_id: itemToAdd.product.id,
+      quantity: itemToAdd.quantity,
+      // id: null,
+    };
+    this.props.postItem(itemToPost);
   };
 
   handleChange = (e) => {
-    console.log("from handleChange e.target.name: ", e.target.name);
-    console.log("state: ", this.state);
     this.setState({ [e.target.name]: e.target.value });
   };
 

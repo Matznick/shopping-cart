@@ -6,19 +6,46 @@ import CartItem from "./CartItem";
 class CartItems extends Component {
   calculateTotal = () => {
     let total = this.props.cartItemsList.reduce((acc, curr) => {
-      console.log(
-        "acc: ",
-        acc,
-        " list: ",
-        this.props.cartItemsList,
-        " curr: ",
-        curr.product.priceInCents,
-        curr.quantity
+      return (
+        acc + this.transformItemToProduct(curr).priceInCents * curr.quantity
       );
-      return acc + curr.product.priceInCents * curr.quantity;
     }, 0);
     return total;
   };
+
+  transformItemToProduct = (item) => {
+    let foundProduct = this.props.availableItems.find(
+      (el) => el.id === item.product_id
+    );
+
+    let newProduct = {
+      name: foundProduct.name,
+      priceInCents: foundProduct.priceInCents,
+      quantity: item.quantity,
+    };
+
+    return newProduct;
+  };
+
+  // transformItemsToProducts = () => {
+  //   let productsToDisplay = [];
+  //   this.props.cartItemsList.map((item) => {
+  //     let findProduct = this.props.availableItems.find(
+  //       (el) => el.id === item.product_id
+  //     );
+  //     console.log("findProduct: ", findProduct);
+  //     let newProduct = {
+  //       name: findProduct.name,
+  //       priceInCents: findProduct.priceInCents,
+  //       quantity: item.quantity,
+  //     };
+  //     productsToDisplay = productsToDisplay.concat(newProduct);
+
+  //     return productsToDisplay;
+  //   });
+  //   console.log(productsToDisplay);
+  //   return productsToDisplay;
+  // };
 
   render() {
     return (
@@ -32,14 +59,17 @@ class CartItems extends Component {
               <div className="col-md-2">Quantity</div>
             </div>
           </div>
-          {this.props.cartItemsList.map((item, i) => (
-            <CartItem
-              product={item.product.name}
-              price={item.product.priceInCents}
-              quantity={item.quantity}
-              key={i}
-            />
-          ))}
+          {this.props.cartItemsList.map((item, i) => {
+            let productTransformed = this.transformItemToProduct(item);
+            return (
+              <CartItem
+                product={productTransformed.name}
+                price={productTransformed.priceInCents}
+                quantity={productTransformed.quantity}
+                key={i}
+              />
+            );
+          })}
           {`${this.calculateTotal() / 100} $`}
         </div>
       </div>

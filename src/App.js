@@ -9,61 +9,59 @@ import { Component } from "react";
 class App extends Component {
   state = {
     availableItems: [],
-    cartItemsList: [
-      {
-        id: 1,
-        product: { id: 40, name: "Mediocre Iron Watch", priceInCents: 399 },
-        quantity: 1,
-      },
-      {
-        id: 2,
-        product: {
-          id: 41,
-          name: "Heavy Duty Concrete Plate",
-          priceInCents: 499,
-        },
-        quantity: 2,
-      },
-      {
-        id: 3,
-        product: {
-          id: 42,
-          name: "Intelligent Paper Knife",
-          priceInCents: 1999,
-        },
-        quantity: 1,
-      },
-    ],
+    cartItemsList: [],
   };
 
   async componentDidMount() {
-    const response = await fetch("http://localhost:8082/api/products");
-    const json = await response.json();
-    this.setState({ availableItems: json });
-    console.log("json: ", json);
+    const responseProducts = await fetch("http://localhost:8082/api/products");
+    const jsonProducts = await responseProducts.json();
+    this.setState({ availableItems: jsonProducts });
+    const responseCartItems = await fetch("http://localhost:8082/api/items");
+    const jsonCartItems = await responseCartItems.json();
+    this.setState({ cartItemsList: jsonCartItems });
   }
 
-  addItem = (itemToAdd) => {
-    itemToAdd = {
-      id: this.state.cartItemsList.length + 1,
-      product: itemToAdd.product,
-      quantity: itemToAdd.quantity,
-    };
-    let newList = this.state.cartItemsList.concat(itemToAdd);
-    console.log(newList);
-    this.setState({
-      cartItemsList: newList,
+  // addItem = (itemToAdd) => {
+  //   itemToAdd = {
+  //     id: this.state.cartItemsList.length + 1,
+  //     product: itemToAdd.product,
+  //     quantity: itemToAdd.quantity,
+  //   };
+  //   let newList = this.state.cartItemsList.concat(itemToAdd);
+  //   this.setState({
+  //     cartItemsList: newList,
+  //   });
+  // };
+
+  postItem = async (itemToPost) => {
+    // add id here, bc is unknown to AddItem component
+    const item = { ...itemToPost, id: this.state.cartItemsList.length + 1 };
+    const response = await fetch("http://localhost:8082/api/items", {
+      method: "POST",
+      body: JSON.stringify(item),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
     });
+    const postedItem = await response.json();
+    const newItems = [...this.state.cartItemsList, postedItem];
+    this.setState({ cartItemsList: newItems });
   };
 
   render() {
     return (
       <div className="App">
         <Header />
-        <CartItems cartItemsList={this.state.cartItemsList} />
+        <CartItems
+          cartItemsList={this.state.cartItemsList}
+          availableItems={this.state.availableItems}
+          key={this.state.cartItemsList}
+        />
         <AddItem
           availableItems={this.state.availableItems}
           addItemCallback={this.addItem}
+          postItem={this.postItem}
         />
         <Footer copyright={"2016"} />
       </div>
